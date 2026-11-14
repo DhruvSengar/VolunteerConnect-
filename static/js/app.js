@@ -1,0 +1,2 @@
+const search=document.querySelector('#live-search');
+if(search){let timer;search.addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(async()=>{const response=await fetch(`/opportunities/search/?q=${encodeURIComponent(search.value)}`);const data=await response.json();document.querySelector('#search-results').innerHTML=data.results.map(x=>`<p class="card"><a href="/opportunities/${x.id}/"><strong>${x.title}</strong></a> · ${x.location} · ${x.slots} slots left</p>`).join('')},250)})}

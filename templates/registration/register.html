@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block title %}Register{% endblock %}{% block content %}<div class="form-card"><h1>Join VolunteerConnect</h1><form method="post">{% csrf_token %}{{ form.as_p }}<button class="button">Create account</button></form></div>{% endblock %}

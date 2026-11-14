@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block title %}Submit hours{% endblock %}{% block content %}<div class="form-card"><h1>Submit service hours</h1><p>{{ signup.opportunity.title }}</p><form method="post">{% csrf_token %}{{ form.as_p }}<button class="button">Submit for verification</button></form></div>{% endblock %}

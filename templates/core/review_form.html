@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block title %}Review{% endblock %}{% block content %}<div class="form-card"><h1>Review {{ opportunity.title }}</h1><form method="post">{% csrf_token %}{{ form.as_p }}<button class="button">Submit review</button></form></div>{% endblock %}
