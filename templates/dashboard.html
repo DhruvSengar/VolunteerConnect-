@@ -1,1 +1,89 @@
-{% extends 'base.html' %}{% block title %}Dashboard{% endblock %}{% block content %}<div class="page-head"><div><p class="eyebrow">YOUR SPACE</p><h1>Hello, {{ user.first_name|default:user.username }}</h1></div><div><a class="button" href="{% url 'opportunity-list' %}">Find opportunities</a> <a class="button" href="{% url 'organization-create' %}">Register organization</a></div></div><div class="grid three stats"><div class="stat"><strong>{{ verified_hours }}</strong><span>Verified hours</span></div><div class="stat"><strong>{{ signups|length }}</strong><span>Applications</span></div><div class="stat"><strong>{{ organizations|length }}</strong><span>Organizations</span></div></div><section class="section"><h2>Upcoming opportunities</h2><div class="grid three">{% for opportunity in opportunities %}<div class="card"><span class="tag">{{ opportunity.event_date }}</span><h3>{{ opportunity.title }}</h3><p>{{ opportunity.organization.name }} · {{ opportunity.location }}</p><a href="{% url 'opportunity-detail' opportunity.pk %}">View details →</a></div>{empty}<p>No opportunities yet.</p>{% endfor %}</div></section>{% if managed_opportunities %}<section class="section"><h2>Organizer controls</h2><div class="grid three">{% for opportunity in managed_opportunities %}<div class="card"><h3>{{ opportunity.title }}</h3><p>{{ opportunity.signups.count }} participant application(s)</p><a class="button" href="{% url 'manage-signups' opportunity.pk %}">Review participants</a></div>{% endfor %}</div></section>{% endif %}{% endblock %}
+{% extends 'base.html' %}{% block title %}Dashboard{% endblock %}{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <p class="eyebrow">Your dashboard</p>
+    <h1>Hello, {{ user.first_name|default:user.username }}</h1>
+  </div>
+  <div class="actions">
+    <a class="btn btn--primary" href="{% url 'opportunity-list' %}">Find opportunities</a>
+    {% if managed_opportunities %}<a class="btn btn--secondary" href="{% url 'opportunity-create' %}">Post an opportunity</a>
+    {% elif not organizations %}<a class="btn btn--secondary" href="{% url 'organization-create' %}">Register an organization</a>{% endif %}
+  </div>
+</div>
+
+{% if pending_logs %}
+<section class="section" aria-labelledby="verify-h">
+  <div class="section__head"><h2 id="verify-h">Hours waiting for you</h2><span class="muted">{{ pending_logs|length }} to check</span></div>
+  <div class="list">
+    {% for log in pending_logs %}
+    <div class="list__row">
+      <span class="avatar" aria-hidden="true">{{ log.signup.volunteer.username|first|upper }}</span>
+      <div class="list__main"><strong>{{ log.signup.volunteer.get_full_name|default:log.signup.volunteer.username }} logged {{ log.hours|floatformat:"-2" }} h</strong><span>{{ log.signup.opportunity.title }} · submitted {{ log.submitted_at|timesince }} ago</span></div>
+      <a class="btn btn--primary btn--sm" href="{% url 'verify-hours' log.id %}">Check hours</a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if signups or not organizations %}
+<div class="grid grid--3">
+  <div class="stat">
+    <strong>{{ verified_hours|floatformat:"-1" }}</strong>
+    <span>{% if next_milestone %}verified hours · {{ next_milestone.required_hours }} for the next certificate{% else %}verified hours · every milestone reached{% endif %}</span>
+    <div class="progress" role="progressbar" aria-label="Progress to the next certificate" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"><i style="--k: {{ progress }}%"></i></div>
+  </div>
+  <a class="stat card--link" href="#applications"><strong>{{ signups|length }}</strong><span>Applications</span></a>
+  <a class="stat card--link" href="{% url 'certificates' %}"><strong>{{ certificate_count }}</strong><span>Certificates</span></a>
+</div>
+
+
+<section class="section" id="applications" aria-labelledby="apps-h">
+  <div class="section__head"><h2 id="apps-h">Your applications</h2></div>
+  {% if signups %}
+  <div class="list">
+    {% for signup in signups %}
+    <div class="list__row">
+      <div class="list__main"><a class="link" href="{% url 'opportunity-detail' signup.opportunity.pk %}"><strong>{{ signup.opportunity.title }}</strong></a><span>{{ signup.opportunity.organization.name }} · {{ signup.opportunity.event_date|date:"D j M" }}</span></div>
+      <span class="chip chip--{{ signup.status }}">{{ signup.get_status_display }}</span>
+      {% if signup.status == 'confirmed' or signup.status == 'completed' %}<a class="btn btn--secondary btn--sm" href="{% url 'submit-hours' signup.id %}">Log hours</a>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty"><strong>No applications yet</strong><span>Apply to an opportunity and its status shows here.</span><a class="link link--arrow" href="{% url 'opportunity-list' %}">Browse opportunities</a></div>
+  {% endif %}
+</section>
+{% endif %}
+
+{% if managed_opportunities %}
+<section class="section" aria-labelledby="org-h">
+  <div class="section__head"><h2 id="org-h">Opportunities you run</h2><a class="link link--arrow" href="{% url 'opportunity-create' %}">Post another</a></div>
+  <div class="grid grid--3">
+    {% for opportunity in managed_opportunities %}
+    <article class="card">
+      <div class="card__top"><h3 class="card__title">{{ opportunity.title }}</h3>{% if not opportunity.is_active %}<span class="chip">Closed</span>{% endif %}</div>
+      <div class="card__meta"><span>{{ opportunity.event_date|date:"D j M" }}</span><span>{{ opportunity.confirmed_count }} of {{ opportunity.capacity }} confirmed</span></div>
+      <div class="card__foot"><a class="link" href="{% url 'manage-signups' opportunity.pk %}">Review applications</a><a class="link" href="{% url 'opportunity-edit' opportunity.pk %}">Edit</a></div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% elif organizations %}
+<section class="section">
+  <div class="empty">
+    <strong>{{ organizations.0.name }} is {{ organizations.0.get_status_display|lower }}</strong>
+    <span>{% if organizations.0.status == 'approved' %}Post your first opportunity so volunteers can apply.{% else %}An administrator reviews new organizations before they can post.{% endif %}</span>
+    {% if organizations.0.status == 'approved' %}<a class="link link--arrow" href="{% url 'opportunity-create' %}">Post an opportunity</a>{% endif %}
+  </div>
+</section>
+{% endif %}
+
+<section class="section" aria-labelledby="up-h">
+  <div class="section__head"><h2 id="up-h">Coming up</h2><a class="link link--arrow" href="{% url 'opportunity-list' %}">See all</a></div>
+  <div class="grid grid--3">
+    {% for opportunity in opportunities %}{% include 'core/_opportunity_card.html' %}
+    {% empty %}<div class="empty"><strong>Nothing scheduled</strong><span>New opportunities appear here once organizations post them.</span></div>{% endfor %}
+  </div>
+</section>
+{% endblock %}

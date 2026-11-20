@@ -1,1 +1,12 @@
-{% extends 'base.html' %}{% block title %}Submit hours{% endblock %}{% block content %}<div class="form-card"><h1>Submit service hours</h1><p>{{ signup.opportunity.title }}</p><form method="post">{% csrf_token %}{{ form.as_p }}<button class="button">Submit for verification</button></form></div>{% endblock %}
+{% extends 'base.html' %}{% block title %}Log hours{% endblock %}{% block content %}
+<div class="form-card">
+  <div class="form-card__head">
+    <p class="eyebrow">{{ signup.opportunity.title }}</p>
+    <h1>Log your hours</h1>
+    <p class="muted">The coordinator checks this entry. Verified hours count towards your certificates.</p>
+  </div>
+  <form method="post">{% csrf_token %}{{ form.as_p }}
+    <button class="btn btn--primary" type="submit">Send for verification</button>
+  </form>
+</div>
+{% endblock %}

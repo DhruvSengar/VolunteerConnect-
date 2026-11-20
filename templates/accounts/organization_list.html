@@ -1,1 +1,23 @@
-{% extends 'base.html' %}{% block title %}Organizations{% endblock %}{% block content %}<div class="page-head"><div><p class="eyebrow">COMMUNITY PARTNERS</p><h1>Approved organizations</h1></div></div><section class="section"><div class="grid three">{% for organization in organizations %}<article class="card"><h2>{{ organization.name }}</h2><p>{{ organization.description|truncatewords:25 }}</p><p class="muted">{{ organization.address }}</p><a href="{% url 'opportunity-list' %}">View opportunities →</a></article>{empty}<p>No approved organizations yet.</p>{% endfor %}</div></section>{% endblock %}
+{% extends 'base.html' %}{% block title %}Organizations{% endblock %}{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <p class="eyebrow">Organizations</p>
+    <h1>Groups you can volunteer with</h1>
+    <p class="lead">Every organization here was approved by an administrator before posting.</p>
+  </div>
+  {% if user.is_authenticated %}<a class="btn btn--secondary" href="{% url 'organization-create' %}">Register an organization</a>{% endif %}
+</div>
+<div class="grid grid--3">
+  {% for organization in organizations %}
+  <article class="card">
+    <span class="avatar" aria-hidden="true">{{ organization.name|first|upper }}</span>
+    <h2 class="card__title">{{ organization.name }}</h2>
+    <p>{{ organization.description|truncatewords:25 }}</p>
+    {% if organization.address %}<div class="card__meta"><span>{{ organization.address }}</span></div>{% endif %}
+    <div class="card__foot"><a class="link link--arrow" href="{% url 'opportunity-list' %}?q={{ organization.name|urlencode }}">Browse opportunities</a></div>
+  </article>
+  {% empty %}
+  <div class="empty"><strong>No organizations yet</strong><span>Approved organizations appear here.</span></div>
+  {% endfor %}
+</div>
+{% endblock %}

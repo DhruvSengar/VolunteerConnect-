@@ -31,6 +31,14 @@ python manage.py runserver
 
 Open http://127.0.0.1:8000/
 
+Demo data (optional)
+powershell
+python manage.py seed_data
+
+Adds demo causes, organizations, opportunities, sign-ups, hour logs and certificates. Running it again changes nothing.
+Volunteers: aarav, meera, kabir. Coordinators: ritu, dev, sana. Password for every demo account: demo-pass-2026
+The command only runs when DEBUG is on, because every demo account shares that password.
+
 Project Structure
 volunteerconnect/   project settings and root URLs
 accounts/           users, organizations, volunteer profiles

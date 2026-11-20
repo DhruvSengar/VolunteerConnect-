@@ -1,1 +1,13 @@
-{% extends 'base.html' %}{% block title %}Certificate verification{% endblock %}{% block content %}<div class="form-card"><p class="eyebrow">VERIFIED CERTIFICATE</p><h1>Certificate is valid</h1><p>Awarded to {{ certificate.volunteer.get_full_name|default:certificate.volunteer.username }} for {{ certificate.milestone.required_hours }} verified service hours.</p><p>Certificate ID: <strong>{{ certificate.certificate_id }}</strong></p><p>Issued: {{ certificate.issued_at }}</p></div>{% endblock %}
+{% extends 'base.html' %}{% block title %}Certificate check{% endblock %}{% block content %}
+<div class="certificate narrow">
+  <div class="certificate__seal" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div>
+  <p class="eyebrow">Valid certificate</p>
+  <h1>{{ certificate.volunteer.get_full_name|default:certificate.volunteer.username }}</h1>
+  <p class="muted">has completed {{ certificate.milestone.required_hours }} verified volunteer hours on VolunteerConnect.</p>
+  <dl class="facts">
+    <div><dt>Milestone</dt><dd>{{ certificate.milestone.name }}</dd></div>
+    <div><dt>Issued</dt><dd>{{ certificate.issued_at|date:"j F Y" }}</dd></div>
+    <div><dt>Certificate ID</dt><dd><code>{{ certificate.certificate_id }}</code></dd></div>
+  </dl>
+</div>
+{% endblock %}

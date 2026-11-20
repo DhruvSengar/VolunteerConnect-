@@ -1,0 +1,15 @@
+<article class="card card--link">
+  <div class="card__top">
+    <div class="stack" style="gap: 8px">
+      <span class="muted" style="font-size: 14px">{{ opportunity.organization.name }}</span>
+      <h3 class="card__title"><a href="{% url 'opportunity-detail' opportunity.pk %}">{{ opportunity.title }}</a></h3>
+    </div>
+    <span class="date-badge" aria-label="{{ opportunity.event_date|date:'l j F' }}"><b>{{ opportunity.event_date|date:"j" }}</b><small>{{ opportunity.event_date|date:"M" }}</small></span>
+  </div>
+  {% if show_description %}<p>{{ opportunity.description|truncatewords:22 }}</p>{% endif %}
+  <div class="card__meta"><span>{{ opportunity.location }}</span><span>{{ opportunity.start_time|time:"G:i" }} to {{ opportunity.end_time|time:"G:i" }}</span></div>
+  <div class="card__foot">
+    <div class="tags">{% for cause in opportunity.causes.all %}<span class="tag">{{ cause.name }}</span>{% endfor %}</div>
+    {% if opportunity.available_slots %}<span class="muted">{{ opportunity.available_slots }} of {{ opportunity.capacity }} places left</span>{% else %}<span class="chip chip--rejected">Full</span>{% endif %}
+  </div>
+</article>

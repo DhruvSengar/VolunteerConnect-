@@ -1,1 +1,12 @@
-{% extends 'base.html' %}{% block title %}Login{% endblock %}{% block content %}<div class="form-card"><h1>Welcome back</h1><form method="post">{% csrf_token %}{{ form.as_p }}<button class="button">Login</button></form><p>New here? <a href="{% url 'register' %}">Create an account</a></p></div>{% endblock %}
+{% extends 'base.html' %}{% block title %}Sign in{% endblock %}{% block content %}
+<div class="form-card">
+  <div class="form-card__head">
+    <h1>Welcome back</h1>
+    <p class="muted">Sign in to apply, log hours and download certificates.</p>
+  </div>
+  <form method="post">{% csrf_token %}{{ form.as_p }}
+    <button class="btn btn--primary" type="submit">Sign in</button>
+  </form>
+  <p class="form-card__foot">New here? <a class="link" href="{% url 'register' %}">Create an account</a></p>
+</div>
+{% endblock %}

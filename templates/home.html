@@ -1,1 +1,526 @@
-{% extends 'base.html' %}{% block title %}VolunteerConnect{% endblock %}{% block content %}<section class="hero"><div><p class="eyebrow">MAKE AN IMPACT</p><h1>Good work starts with one opportunity.</h1><p>Discover meaningful community projects, track verified service hours, and celebrate every milestone.</p><a class="button" href="{% url 'opportunity-list' %}">Explore opportunities</a></div><div class="hero-card"><span>25</span><small>hours to your first milestone</small></div></section><section class="section"><h2>Built for trusted volunteering</h2><div class="grid three"><div class="card"><h3>Find your cause</h3><p>Search approved organizations and opportunities that match your interests.</p></div><div class="card"><h3>Track your impact</h3><p>Keep a clear record of participation and verified service hours.</p></div><div class="card"><h3>Earn recognition</h3><p>Receive certificates when you reach service-hour milestones.</p></div></div></section>{% endblock %}
+{% load static %}<!doctype html>
+<html lang="en" data-type="software" data-radius="soft" data-ground="sand" data-buttons="solid" data-motion>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VolunteerConnect: volunteer app with verified hours</title>
+<meta name="description" content="Organizations post opportunities, volunteers apply, and coordinators check every logged hour. Certificates come at 25, 50 and 100 hours.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="VolunteerConnect: volunteer app with verified hours">
+<meta property="og:description" content="Post opportunities, confirm sign-ups and verify volunteer hours in one app.">
+<meta property="og:image" content="{% static 'share.jpg' %}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+<meta name="theme-color" content="#fbf6ec">
+<!-- <link rel="canonical" href="https://[the project's domain]/"> once the app has a public domain -->
+<meta name="site-kind" content="software">
+<meta name="page-type" content="software">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Inter:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'assets/system.css' %}">
+<link rel="stylesheet" href="{% static 'assets/ui/cards.css' %}">
+<link rel="stylesheet" href="{% static 'assets/motion/motion.css' %}">
+<link rel="stylesheet" href="{% static 'assets/backgrounds/backgrounds.css' %}">
+<link rel="stylesheet" href="{% static 'assets/layout/layout.css' %}">
+<link rel="stylesheet" href="{% static 'assets/icons/icon.css' %}">
+<style>
+:root {
+  --p-bg: #fbf6ec; --p-surface: #ffffff; --p-ink: #2a1e12; --p-muted: #6b5a46;
+  --p-accent: #a3401f; --p-accent-ink: #fbf6ec; --p-action: #f0a81c; --p-action-ink: #2a1e12;
+  --p-inv-bg: #2a1e12; --p-inv-surface: #3a2b1c; --p-inv-ink: #fbf6ec; --p-inv-muted: #c9b9a3;
+  --p-inv-accent: #f0a81c; --p-inv-accent-ink: #2a1e12; --p-inv-action: #f0a81c; --p-inv-action-ink: #2a1e12;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-text: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --display-weight: 650;
+  --display-tracking: -0.03em;
+  --display-tracking-xl: -0.04em;
+}
+</style>
+<link rel="stylesheet" href="{% static 'assets/ui/base.css' %}">
+<link rel="stylesheet" href="{% static 'assets/ui/window/fragment.css' %}">
+<link rel="stylesheet" href="{% static 'assets/ui/doc/fragment.css' %}">
+<link rel="stylesheet" href="{% static 'assets/ui/files/fragment.css' %}">
+<link rel="stylesheet" href="{% static 'assets/ui/calendar/fragment.css' %}">
+<link rel="stylesheet" href="{% static 'assets/ui/stat/fragment.css' %}">
+<link rel="stylesheet" href="{% static 'assets/ui/checklist/fragment.css' %}">
+<link rel="stylesheet" href="{% static 'assets/ui/notify/fragment.css' %}">
+<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+<script src="{% static 'assets/backgrounds/backgrounds.js' %}"></script>
+<script>document.documentElement.classList.add('mo-js');setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)</script>
+<link rel="modulepreload" href="{% static 'assets/moments/moments.js' %}">
+<link rel="modulepreload" href="{% static 'assets/moments/lib.js' %}">
+<link rel="modulepreload" href="{% static 'assets/moments/iris-opens/moment.js' %}">
+<style>
+  /* the hero collage's pieces: sized in % of the collage, their text in container units */
+  .ly-collage { container-type: inline-size; }
+  .ly-collage .ly-piece { box-shadow: 0 1px 2px rgb(42 30 18 / .1), 0 22px 48px -22px rgb(42 30 18 / .4); }
+  .ly-collage .pc-card { background: #fff; color: var(--p-ink); padding: 3.4cqw 3.8cqw; display: grid; align-content: start; gap: 1.6cqw; font: 400 max(13px, 2cqw)/1.35 var(--font-text); }
+  .pc-card .lbl { color: var(--p-muted); font-size: max(13px, 1.8cqw); font-weight: 500; }
+  .pc-card h4 { margin: 0; font: 500 max(16px, 3.6cqw)/1.1 var(--font-display); letter-spacing: -0.02em; }
+  .pc-card .ln { display: flex; justify-content: space-between; gap: 2cqw; padding-top: 1.4cqw; border-top: 1px solid rgb(42 30 18 / .1); }
+  .pc-card .ln em { font-style: normal; font-weight: 500; }
+  .pc-card .ln em.is-ok { color: #1f7a4d; }
+  .pc-card .big { font: 500 max(28px, 8cqw)/1 var(--font-display); letter-spacing: -0.03em; }
+  .pc-card .act { justify-self: start; margin-top: .6cqw; background: var(--p-action); color: var(--p-action-ink); border-radius: 10px; padding: 1cqw 2.6cqw; font-weight: 500; }
+  @media (max-width: 639px) { .pc-card .ln:nth-of-type(n+3), .ly-collage .pc-side { display: none; } }
+
+  /* the app window: sections-library.md, app-frame */
+  .app.ui { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); margin-top: var(--s-7); background: var(--u-bg); border: 1px solid var(--u-border); border-radius: var(--u-r); box-shadow: var(--u-shadow); }
+  .app > .app__pane { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
+  .app > .app__pane + .app__pane { border-left: 1px solid var(--u-line); }
+  .app > .app__pane > .ui-panel { width: 100%; border: 0; border-radius: 0; box-shadow: none; }
+  .app > .app__pane > .ui-doc { width: 100%; max-width: none; }
+  .app > .app__pane::after { content: ""; position: absolute; inset: auto 0 0 0; height: 64px; background: linear-gradient(transparent, var(--u-bg)); pointer-events: none; }
+  @media (min-width: 1024px) and (max-width: 1279px) { .app.ui { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); } }
+  @media (max-width: 1023px) {
+    .app.ui { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+    .app > .app__pane--list { max-height: 252px; }
+    .app > .app__pane--list::after { display: none; }
+    .app .ui-win__side { display: none; }
+    .app .ui-win__body { grid-template-columns: minmax(0, 1fr); }
+    .app > .app__pane + .app__pane { border-left: 0; border-top: 1px solid var(--u-line); }
+  }
+  @media (max-width: 639px) {
+    .app.ui { grid-template-rows: minmax(0, 1fr); }
+    .app > .app__pane--list { display: none; }
+    .app > .app__pane + .app__pane { border-top: 0; }
+  }
+
+  /* the kit's lit ground (the closing footer, the feature panels) in Marigold cream, not the kit's tan sand */
+  html[data-ground] { --ground-bg: #fbf6ec; --ground-surface: #fbf6ec; --ground-ink: #2a1e12; --ground-muted: #6b5a46; --ground-accent: #fde7b0; }
+  /* the logo tile in marigold, as in the app header and the favicon */
+  .mark.mark--initial { background: var(--p-action); color: var(--p-action-ink); }
+  /* Fraunces sets wider than a grotesk: the triptych headline a step smaller so it holds in 3 lines */
+  .hero--triptych h1 { font-size: calc(var(--ly-h1-side) * .86); letter-spacing: -0.035em; }
+  /* reports: the four files as a 2 x 2 grid held inside the frame, centred, none cut by the edge */
+  #reports .stage > .reports-files { left: 56px; right: 56px; top: 50%; translate: 0 -50%; }
+  #reports .reports-files > .ui-files { min-width: 0; max-width: none; width: 100%; }
+  #reports .reports-files .ui-files__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 639px) { #reports .stage > .reports-files { left: 20px; right: 20px; } }
+  #features .panel { --p-h: 280px; }
+  .hero--triptych .hero__cta .btn { height: var(--btn-h); font-size: var(--t-body); padding-inline: var(--s-5); }
+  /* the open log's note sits over the text on a phone: the log alone there */
+  @media (max-width: 639px) { .app .ui-doc__note { display: none; } }
+  /* the name is 16 letters: sized to the .wrap so it never runs past the right line */
+  .close__word { font-size: min(160px, calc((100vw - 2 * var(--gut)) * .118)); }
+  @media (max-width: 639px) { #features .panel { --p-h: 140px; } }
+</style>
+</head>
+<body>
+<!-- type: software (site-kind software)
+     deal: hero triptych, nav nav-mega, close close-word, footer footer-statement, rhythm surface-pairs,
+     buttons pill, mark initial, grounds none dealt, lit ground sky
+     palette: Marigold, chosen by the client from a scheme sheet (cream ground, espresso ink, marigold action, brick accent), type Fraunces + Inter, radius soft, buttons solid
+     effect: grain-gradient in the #reports [data-visual] frame; card grounds: none fitted (lit ground plain)
+     moments: iris-opens on #questions (the surface band)
+     photographs: stand-ins from Wikimedia Commons, to be replaced by the project's own -->
+
+<header class="nav">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="nav__logo" href="#top"><span class="mark mark--initial" aria-hidden="true">V</span>VolunteerConnect</a>
+    <nav class="nav__links" aria-label="Main">
+      <div class="nav__item">
+        <a class="nav__link" href="#app">Product <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav__menu">
+          <div class="wrap grid">
+            <div class="menu-col span-3">
+              <p class="t-label">Volunteers</p>
+              <a href="#features">Opportunities<span>Search by title or place</span></a>
+              <a href="#app">Hour logs<span>Submit hours after an event</span></a>
+              <a href="#reports">Reports<span>Your hours as CSV or PDF</span></a>
+            </div>
+            <div class="menu-col span-3">
+              <p class="t-label">Coordinators</p>
+              <a href="#features">Sign-ups<span>Confirm up to capacity</span></a>
+              <a href="#app">Verification<span>Check each hour log</span></a>
+            </div>
+            <a class="menu-card span-3 start-10" href="#reports">
+              <div class="panel">
+                <div class="stage stage--fade-br"><div class="at-corner" style="--ax: 24px; --ay: 24px">
+                  <div class="ui ui-notify" data-ui="notify">
+                    <ul class="ui-notify__list" data-notify-list>
+                      <li class="ui-note"><span class="ui-note__ico"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg></span><span class="ui-note__text"><span class="ui-note__title">Certificate issued<time>now</time></span><span class="ui-note__body">25 verified hours</span></span></li>
+                    </ul>
+                  </div>
+                </div></div>
+              </div>
+              <span class="t-card">Certificates</span>
+              <span class="t-small muted">PDF with a public check page</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="nav__item"><a class="nav__link" href="#features">Features</a></div>
+      <div class="nav__item"><a class="nav__link" href="#reports">Reports</a></div>
+      <div class="nav__item"><a class="nav__link" href="#questions">Questions</a></div>
+    </nav>
+    <div class="nav__actions">
+      {% if user.is_authenticated %}
+      <a class="nav__link" href="{% url 'opportunity-list' %}">Opportunities</a>
+      <a class="btn btn--primary" href="{% url 'dashboard' %}">Open your dashboard</a>
+      {% else %}
+      <a class="nav__link" href="{% url 'login' %}">Sign in</a>
+      <a class="btn btn--primary" href="{% url 'register' %}">Create an account</a>
+      {% endif %}
+    </div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero hero--triptych" data-enter aria-labelledby="hero-h">
+    <div class="wrap"><div class="hero-text grid hero__grid">
+      <div class="span-3">
+        <h1 id="hero-h">Volunteer app with verified hours</h1>
+        <p class="hero__lead">Organizations post opportunities, volunteers apply, and coordinators check each logged hour. Certificates come at 25, 50 and 100 hours.</p>
+      </div>
+      <div class="ly-collage span-6 start-4" role="img" aria-label="Volunteers at a beach clean-up, planting trees and sorting food, beside an opportunity card, an hour log and a certificate from VolunteerConnect">
+        <div class="ly-collage__set is-on">
+          <div class="ly-piece" style="left: 40%; top: 38%; width: 56%; height: 58%"><img src="{% static 'assets/img/photo-f131443408-960.webp' %}" srcset="{% static 'assets/img/photo-f131443408-500.webp' %} 500w, {% static 'assets/img/photo-f131443408-960.webp' %} 960w" sizes="(max-width: 639px) 60vw, 25vw" width="960" height="640" decoding="async" alt="" style="object-position: 50% 45%" fetchpriority="high" data-source="stand-in" data-subject="volunteers picking up litter on a beach"></div>
+          <div class="ly-piece pc-card" style="left: 4%; top: 6%; width: 50%">
+            <span class="lbl">Environment</span>
+            <h4>Okhla Bird Sanctuary clean-up</h4>
+            <div class="ln"><span>Saturday</span><em>7:00 to 11:00</em></div>
+            <div class="ln"><span>Places left</span><em>18 of 30</em></div>
+            <div class="ln"><span>Bring</span><em>Closed shoes, water</em></div>
+            <span class="act">Apply now</span>
+          </div>
+          <div class="ly-piece pc-card pc-side" style="left: 58%; top: 8%; width: 38%">
+            <span class="lbl">Applications</span>
+            <div class="ln"><span>Aarav M.</span><em class="is-ok">Confirmed</em></div>
+            <div class="ln"><span>Kabir S.</span><em>Pending</em></div>
+          </div>
+        </div>
+        <div class="ly-collage__set" aria-hidden="true">
+          <div class="ly-piece" style="left: 4%; top: 6%; width: 58%; height: 54%"><img src="{% static 'assets/img/photo-f131313301-960.webp' %}" srcset="{% static 'assets/img/photo-f131313301-500.webp' %} 500w, {% static 'assets/img/photo-f131313301-960.webp' %} 960w" sizes="(max-width: 639px) 60vw, 25vw" width="960" height="640" decoding="async" alt="" style="object-position: 50% 50%" data-source="stand-in" data-subject="volunteers planting tree saplings"></div>
+          <div class="ly-piece pc-card" style="left: 42%; top: 52%; width: 54%; height: 44%">
+            <span class="lbl">Hour log</span>
+            <h4>Monsoon tree planting</h4>
+            <div class="ln"><span>Hours</span><em>4</em></div>
+            <div class="ln"><span>Checked by</span><em>Ritu S.</em></div>
+            <div class="ln"><span>Status</span><em class="is-ok">Verified</em></div>
+          </div>
+          <div class="ly-piece pc-card pc-side" style="left: 66%; top: 8%; width: 30%">
+            <span class="lbl">Verified hours</span>
+            <span class="big">26.5</span>
+          </div>
+        </div>
+        <div class="ly-collage__set" aria-hidden="true">
+          <div class="ly-piece" style="left: 40%; top: 38%; width: 56%; height: 58%"><img src="{% static 'assets/img/photo-f51971423-960.webp' %}" srcset="{% static 'assets/img/photo-f51971423-500.webp' %} 500w, {% static 'assets/img/photo-f51971423-960.webp' %} 960w" sizes="(max-width: 639px) 60vw, 25vw" width="960" height="539" decoding="async" alt="" style="object-position: 50% 50%" data-source="stand-in" data-subject="volunteers sorting tinned food at a food bank"></div>
+          <div class="ly-piece pc-card" style="left: 4%; top: 6%; width: 50%">
+            <span class="lbl">Certificate of service</span>
+            <h4>25 verified hours</h4>
+            <div class="ln"><span>Awarded to</span><em>Meera Iyer</em></div>
+            <div class="ln"><span>Certificate ID</span><em>7f3c 21ad</em></div>
+            <span class="act">Download PDF</span>
+          </div>
+          <div class="ly-piece pc-card pc-side" style="left: 58%; top: 8%; width: 38%">
+            <span class="lbl">Public check</span>
+            <div class="ln"><span>Certificate</span><em class="is-ok">Valid</em></div>
+          </div>
+        </div>
+      </div>
+      <div class="span-3 start-10 hero__cta">
+        {% if user.is_authenticated %}<a class="btn btn--primary" href="{% url 'dashboard' %}">Open your dashboard</a>
+        {% else %}<a class="btn btn--primary" href="{% url 'register' %}">Create an account</a>{% endif %}
+      </div>
+    </div></div>
+  </section>
+
+  <section class="section" id="app" aria-labelledby="app-h">
+    <div class="wrap">
+      <div class="grid">
+        <h2 class="span-5" id="app-h">Every hour log, checked in one place</h2>
+        <div class="span-6 start-7 stack-4">
+          <p>Volunteers submit hours after an event. The coordinator opens each log, checks it against the sign-up and verifies or rejects it. Only verified hours count.</p>
+          <a class="link" href="#features">See what coordinators manage</a>
+        </div>
+      </div>
+      <div class="ui app fill" role="img" aria-label="The hour log list beside one open log from the Diwali meal drive, with its sign-up checked" data-ui-pause-host>
+        <div class="app__pane app__pane--list">
+          <div class="ui ui-panel ui-win" data-ui="window" data-open="Pending" data-work="Checking" data-done="Verified">
+            <div class="ui-win__bar">
+              <span class="ui-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="ui-win__crumb">Hour logs <i>/</i> <b>Pending</b></span>
+              <span class="ui-spacer"></span>
+              <span class="ui-win__search" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg><span class="ui-win__ph">Search</span><span class="ui-kbd">/</span></span>
+            </div>
+            <div class="ui-win__body">
+              <nav class="ui-win__side" aria-hidden="true">
+                <span class="ui-win__nav is-on"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 1.5"/></svg>Pending<em>9</em></span>
+                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg>Verified<em>41</em></span>
+                <span class="ui-win__nav"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></svg>Rejected<em>2</em></span>
+                <span class="ui-win__label">Causes</span>
+                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Environment</span>
+                <span class="ui-win__nav"><span class="ui-win__hash">#</span>Food security</span>
+              </nav>
+              <div class="ui-win__main">
+                <div class="ui-win__cols" aria-hidden="true"><span>Volunteer</span><span>Opportunity</span><span>Status</span><span>Age</span></div>
+                <ul class="ui-win__rows">
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">AM</span><span class="ui-win__who">Aarav Mehta</span><span class="ui-win__sub">Diwali meal drive · 3 h</span><span class="ui-win__st" data-st>Pending</span><span class="ui-win__age">2h</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">MI</span><span class="ui-win__who">Meera Iyer</span><span class="ui-win__sub">Weekend meal kit packing · 4 h</span><span class="ui-win__st" data-st>Pending</span><span class="ui-win__age">3h</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">KS</span><span class="ui-win__who">Kabir Singh</span><span class="ui-win__sub">Reading hour at the library · 2 h</span><span class="ui-win__st" data-st>Pending</span><span class="ui-win__age">5h</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">NR</span><span class="ui-win__who">Neha Rawat</span><span class="ui-win__sub">Okhla clean-up · 4 h</span><span class="ui-win__st is-you" data-st>Over shift</span><span class="ui-win__age">6h</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="5">RB</span><span class="ui-win__who">Rohan Bhatt</span><span class="ui-win__sub">Blood donation camp · 6 h</span><span class="ui-win__st" data-st>Pending</span><span class="ui-win__age">1d</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="3">SK</span><span class="ui-win__who">Simran Kaur</span><span class="ui-win__sub">Maths tutoring, Class 8 · 2 h</span><span class="ui-win__st" data-st>Pending</span><span class="ui-win__age">1d</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="1">VP</span><span class="ui-win__who">Vikram Pillai</span><span class="ui-win__sub">E-waste collection day · 5 h</span><span class="ui-win__st" data-st>Pending</span><span class="ui-win__age">2d</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="4">AJ</span><span class="ui-win__who">Ananya Joshi</span><span class="ui-win__sub">Community kitchen shift · 4 h</span><span class="ui-win__st is-done" data-st>Verified</span><span class="ui-win__age">2d</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="2">FK</span><span class="ui-win__who">Farhan Khan</span><span class="ui-win__sub">Monsoon tree planting · 4 h</span><span class="ui-win__st is-done" data-st>Verified</span><span class="ui-win__age">3d</span></li>
+                  <li class="ui-win__row" data-row><span class="ui-avatar" data-tone="5">MI</span><span class="ui-win__who">Meera Iyer</span><span class="ui-win__sub">Diwali meal drive · 26.5 h</span><span class="ui-win__st is-done" data-st>Verified</span><span class="ui-win__age">3w</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="app__pane app__pane--open" data-ui-loop>
+          <div class="ui ui-doc" data-ui="doc">
+            <article class="ui-doc__page">
+              <div class="ui-doc__label">Hour log, Aarav Mehta</div>
+              <div class="ui-doc__title">Diwali meal drive, Laxmi Nagar</div>
+              <div class="ui-doc__text">Aarav logged <mark class="ui-doc__mark is-on">3 hours</mark> for an extra delivery run on the second day of the drive.</div>
+              <div class="ui-doc__text">His sign-up for this opportunity is <mark class="ui-doc__mark" data-kind="Sign-up" data-msg="Confirmed, then marked completed after the event." data-where="Applications, Diwali meal drive">completed</mark>, and 8 of his hours here are already verified.</div>
+              <div class="ui-doc__text">Notes: packed 60 meal kits with the evening team and delivered them to Shakarpur.</div>
+              <div class="ui-doc__text">Once verified, these hours count toward his next certificate at 25 hours. A rejected log keeps its record but adds nothing.</div>
+              <div class="ui-doc__text">Submitted 2 hours ago. The coordinator of this opportunity is the only person who can verify it.</div>
+            </article>
+            <aside class="ui-doc__note ui-panel is-on" aria-live="polite">
+              <div class="ui-doc__kind"><span class="ui-doc__dot"></span><span data-doc-kind>Check</span></div>
+              <div class="ui-doc__msg" data-doc-msg>The event ran 8:00 to 18:00; 3 hours fit the shift.</div>
+              <div class="ui-doc__where" data-doc-where>Opportunity, Diwali meal drive</div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="reports" style="--hm: 2" aria-labelledby="reports-h">
+    <div class="wrap">
+      <div class="grid fill">
+        <div class="span-5 stack-6">
+          <h2 id="reports-h">Hours as CSV and PDF</h2>
+          <p class="t-lead">Each volunteer downloads a service report of verified hours and every log with its status. Certificates come as PDF files with their own ID.</p>
+          <ul class="stack-3">
+            <li>The CSV lists opportunity, hours, status and date.</li>
+            <li>The PDF report shows the latest 12 logs.</li>
+            <li>Anyone can check a certificate at its public page.</li>
+          </ul>
+          <a class="link" href="#questions">Read how certificates work</a>
+        </div>
+        <div class="frame frame--split frame--fill span-6 start-7" data-visual data-fx="grain-gradient" data-fx-palette='{"bg":"#fde7b0","surface":"#fbf6ec","ink":"#2a1e12","accent":"#f0a81c"}' data-fx-seed="7">
+          <div class="stage stage--fade-br"><div class="at-corner reports-files">
+            <div class="ui ui-files" data-ui="files" data-ui-loop data-reading="Reading {n} of {total}">
+              <div class="ui-files__status"><span class="ui-dot"></span><span data-files-status>4 files ready</span></div>
+              <ul class="ui-files__grid">
+                <li class="ui-file is-done">
+                  <span class="ui-file__icon"><img data-icon="xlsx" src="{% static 'assets/icons/xlsx.svg' %}" alt="" width="24" height="24" loading="lazy"></span>
+                  <span class="ui-file__name">volunteer-hours.csv</span>
+                  <span class="ui-file__kind">Every log</span>
+                  <span class="ui-file__bar"><i></i></span>
+                  <span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </li>
+                <li class="ui-file is-done">
+                  <span class="ui-file__icon"><img data-icon="pdf" src="{% static 'assets/icons/pdf.svg' %}" alt="" width="24" height="24" loading="lazy"></span>
+                  <span class="ui-file__name">volunteer-report.pdf</span>
+                  <span class="ui-file__kind">Service report</span>
+                  <span class="ui-file__bar"><i></i></span>
+                  <span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </li>
+                <li class="ui-file is-done">
+                  <span class="ui-file__icon"><img data-icon="pdf" src="{% static 'assets/icons/pdf.svg' %}" alt="" width="24" height="24" loading="lazy"></span>
+                  <span class="ui-file__name">certificate-25-hours.pdf</span>
+                  <span class="ui-file__kind">Certificate</span>
+                  <span class="ui-file__bar"><i></i></span>
+                  <span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </li>
+                <li class="ui-file is-done">
+                  <span class="ui-file__icon"><img data-icon="pdf" src="{% static 'assets/icons/pdf.svg' %}" alt="" width="24" height="24" loading="lazy"></span>
+                  <span class="ui-file__name">certificate-50-hours.pdf</span>
+                  <span class="ui-file__kind">Certificate</span>
+                  <span class="ui-file__bar"><i></i></span>
+                  <span class="ui-file__check"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 8.2 2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </li>
+              </ul>
+            </div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section g2" id="features" aria-labelledby="features-h">
+    <div class="wrap">
+      <div class="group">
+        <div class="section-head">
+          <h2 id="features-h">Runs a volunteer programme. <span class="muted">Posts, sign-ups, hours and approvals.</span></h2>
+        </div>
+        <div class="grid">
+          <article class="card card--row card--open span-6 m-nolift">
+            <h3>Volunteer dates for the week ahead</h3>
+            <p>The dashboard lists coming opportunities in date order, each with its time and the places still open.</p>
+            <div class="panel">
+              <div class="stage stage--fade-b"><div class="at-rise fit to-edge" style="--fit-max: 330px; --ax: max(24px, 50% - 165px); --ay: 28px; --ay-sm: 20px" data-ui-loop>
+                <div class="ui ui-panel ui-calendar" data-ui="calendar" data-start="23" data-end="29" data-month="Nov">
+                  <div class="ui-cal__head">
+                    <div class="ui-cal__month">November <span>2026</span></div>
+                    <span class="ui-spacer"></span>
+                    <span class="ui-chip ui-chip--plain ui-chip--ink" data-cal-range>Nov 23 – 29</span>
+                    <span class="ui-cal__nav" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M10 4 6 8l4 4"/></svg></span>
+                    <span class="ui-cal__nav" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m6 4 4 4-4 4"/></svg></span>
+                  </div>
+                  <div class="ui-cal__dow" aria-hidden="true"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+                  <div class="ui-cal__days">
+                    <span class="ui-cal__d is-out"><b>26</b></span><span class="ui-cal__d is-out"><b>27</b></span><span class="ui-cal__d is-out"><b>28</b></span><span class="ui-cal__d is-out"><b>29</b></span><span class="ui-cal__d is-out"><b>30</b></span><span class="ui-cal__d is-out"><b>31</b></span><span class="ui-cal__d" data-d="1"><b>1</b></span>
+                    <span class="ui-cal__d" data-d="2"><b>2</b></span><span class="ui-cal__d" data-d="3"><b>3</b></span><span class="ui-cal__d" data-d="4"><b>4</b></span><span class="ui-cal__d" data-d="5"><b>5</b></span><span class="ui-cal__d" data-d="6"><b>6</b></span><span class="ui-cal__d" data-d="7"><b>7</b></span><span class="ui-cal__d" data-d="8"><b>8</b></span>
+                    <span class="ui-cal__d" data-d="9"><b>9</b></span><span class="ui-cal__d" data-d="10"><b>10</b></span><span class="ui-cal__d" data-d="11"><b>11</b></span><span class="ui-cal__d" data-d="12"><b>12</b></span><span class="ui-cal__d" data-d="13"><b>13</b></span><span class="ui-cal__d" data-d="14"><b>14</b></span><span class="ui-cal__d" data-d="15"><b>15</b></span>
+                    <span class="ui-cal__d" data-d="16"><b>16</b></span><span class="ui-cal__d" data-d="17"><b>17</b></span><span class="ui-cal__d" data-d="18"><b>18</b></span><span class="ui-cal__d" data-d="19"><b>19</b></span><span class="ui-cal__d" data-d="20"><b>20</b></span><span class="ui-cal__d is-today" data-d="21"><b>21</b></span><span class="ui-cal__d" data-d="22"><b>22</b></span>
+                    <span class="ui-cal__d is-start" data-d="23"><b>23</b></span><span class="ui-cal__d is-in is-mark" data-d="24"><b>24</b></span><span class="ui-cal__d is-in" data-d="25"><b>25</b></span><span class="ui-cal__d is-in" data-d="26"><b>26</b></span><span class="ui-cal__d is-in" data-d="27"><b>27</b></span><span class="ui-cal__d is-in" data-d="28"><b>28</b></span><span class="ui-cal__d is-end" data-d="29"><b>29</b></span>
+                    <span class="ui-cal__d" data-d="30"><b>30</b></span><span class="ui-cal__d is-out"><b>1</b></span><span class="ui-cal__d is-out"><b>2</b></span><span class="ui-cal__d is-out"><b>3</b></span><span class="ui-cal__d is-out"><b>4</b></span><span class="ui-cal__d is-out"><b>5</b></span><span class="ui-cal__d is-out"><b>6</b></span>
+                  </div>
+                  <div class="ui-cal__events">
+                    <div class="ui-cal__ev" data-ev="23"><span class="ui-cal__date"><b>23</b><i>Nov</i></span><span class="ui-cal__evtext"><span class="ui-cal__evtitle">Weekend meal kit packing</span><span class="ui-cal__evsub">Laxmi Nagar, Delhi · 24 of 25 places left</span></span></div>
+                    <div class="ui-cal__ev" data-ev="26"><span class="ui-cal__date"><b>26</b><i>Nov</i></span><span class="ui-cal__evtext"><span class="ui-cal__evtitle">Okhla Bird Sanctuary clean-up</span><span class="ui-cal__evsub">7:00 to 11:00 · 29 of 30 places left</span></span></div>
+                    <div class="ui-cal__ev" data-ev="29"><span class="ui-cal__date"><b>29</b><i>Nov</i></span><span class="ui-cal__evtext"><span class="ui-cal__evtitle">Reading hour at the library</span><span class="ui-cal__evsub">Sector 15, Noida · 9 of 10 places left</span></span></div>
+                  </div>
+                </div>
+              </div></div>
+            </div>
+          </article>
+          <article class="card card--row card--open span-6 m-nolift">
+            <h3>Volunteer sign-ups capped at capacity</h3>
+            <p>Each application waits for the coordinator. Once every place is filled, the app refuses another confirmation.</p>
+            <div class="panel">
+              <div class="stage stage--fade-b"><div class="at-corner" style="--ax: 32px; --ay: 40px">
+                <div class="ui ui-panel ui-stat" data-ui="stat" data-from="12" data-to="18" data-suffix=" of 30">
+                  <div class="ui-stat__head">
+                    <div class="ui-stat__top">
+                      <span class="ui-stat__label">Places confirmed, Okhla clean-up</span>
+                      <span class="ui-stat__range">This week<svg class="ui-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m4.5 6.5 3.5 3.5 3.5-3.5"/></svg></span>
+                    </div>
+                    <div class="ui-stat__line">
+                      <span class="ui-stat__num" data-stat-num>18 of 30</span>
+                      <span class="ui-stat__sub">12 places open</span>
+                    </div>
+                  </div>
+                  <div class="ui-stat__chart">
+                    <svg class="ui-stat__svg" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true">
+                      <path class="ui-stat__grid" d="M0 30.5H400M0 60.5H400M0 90.5H400"/>
+                      <path class="ui-stat__cover" fill-rule="evenodd" d=""/>
+                      <g class="ui-stat__bars"><rect rx="3" x="0.00" y="100" width="48" height="20"/><rect rx="3" x="58.67" y="88" width="48" height="32"/><rect rx="3" x="117.33" y="76" width="48" height="44"/><rect rx="3" x="176.00" y="68" width="48" height="52"/><rect rx="3" x="234.67" y="56" width="48" height="64"/><rect rx="3" x="293.33" y="52" width="48" height="68"/><rect rx="3" x="352.00" y="48" width="48" height="72"/></g>
+                    </svg>
+                    <div class="ui-stat__axis" aria-hidden="true"><span>Mon</span><span>Thu</span><span>Today</span></div>
+                  </div>
+                </div>
+              </div></div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="grid">
+        <article class="card card--row card--open span-6 m-nolift">
+          <h3>Hour log alerts for coordinators</h3>
+          <p>A submitted log goes to the coordinator of that event. Verified hours update the report and the next certificate.</p>
+          <div class="panel">
+            <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max: 380px; --ax: max(24px, 50% - 190px); --ay: 32px; --ay-sm: 20px">
+              <div class="ui ui-notify" data-ui="notify">
+                <ul class="ui-notify__list" data-notify-list>
+                  <li class="ui-note"><span class="ui-avatar ui-note__av" data-tone="1">AM</span><span class="ui-note__text"><span class="ui-note__title">Aarav Mehta logged 3 hours<time>now</time></span><span class="ui-note__body">Diwali meal drive, waiting for you</span></span><span class="ui-btn ui-btn--sm ui-note__btn">Verify</span></li>
+                  <li class="ui-note"><span class="ui-avatar ui-note__av" data-tone="3">MI</span><span class="ui-note__text"><span class="ui-note__title">Meera Iyer logged 4 hours<time>1h</time></span><span class="ui-note__body">Weekend meal kit packing</span></span></li>
+                  <li class="ui-note"><span class="ui-note__ico"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m3.5 8.4 2.8 2.8 6.2-6.4"/></svg></span><span class="ui-note__text"><span class="ui-note__title">Certificate issued<time>2d</time></span><span class="ui-note__body">Meera Iyer reached 25 verified hours</span></span></li>
+                </ul>
+              </div>
+            </div></div>
+          </div>
+        </article>
+        <article class="card card--row card--open span-6 m-nolift">
+          <h3>Organization approval before posting</h3>
+          <p>Coordinators register their organization first. Once an administrator approves it, its opportunities go live.</p>
+          <div class="panel">
+            <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max: 340px; --ax: max(24px, 50% - 170px); --ay: 40px; --ay-sm: 24px">
+              <div class="ui ui-panel ui-checks" data-ui="checklist">
+                <div class="ui-checks__head">
+                  <div class="ui-title">Paws Shelter Trust</div>
+                  <span class="ui-spacer"></span>
+                  <div class="ui-meta" data-checks-count>3 of 4</div>
+                </div>
+                <div class="ui-checks__bar"><i data-checks-bar style="--k:0.75"></i></div>
+                <ul class="ui-checks__list">
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Name and description</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Contact email</span></li>
+                  <li class="ui-check is-done"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Address, Indirapuram</span></li>
+                  <li class="ui-check"><span class="ui-check__box"><svg viewBox="0 0 16 16"><path d="m4.5 8.2 2.3 2.3 4.7-5"/></svg></span><span class="ui-check__label">Approved by an administrator</span></li>
+                </ul>
+              </div>
+            </div></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="questions" data-moment="iris-opens" data-moment-opts='{"from": "base"}' aria-labelledby="questions-h">
+    <div class="wrap">
+      <div class="grid grid--top">
+        <div class="span-5 stack-4">
+          <h2 id="questions-h">Questions</h2>
+          <p>What volunteers and coordinators ask before they start.</p>
+          <a class="link" href="{% url 'opportunity-list' %}">Browse open opportunities</a>
+        </div>
+        <div class="faq span-6 start-7">
+          <div class="faq__item"><h3>Who can post an opportunity?</h3><p>A coordinator whose organization an administrator has approved. Until then the organization stays pending.</p></div>
+          <div class="faq__item"><h3>When do my hours count?</h3><p>Once the coordinator of that opportunity verifies your log. Pending and rejected logs add nothing.</p></div>
+          <div class="faq__item"><h3>When do I get a certificate?</h3><p>At 25, 50 and 100 verified hours. Each one is a PDF with its own certificate ID.</p></div>
+          <div class="faq__item"><h3>How does someone check my certificate?</h3><p>Every certificate has a public page at its ID, showing your name, the hours and the date it was issued.</p></div>
+          <div class="faq__item"><h3>What happens when an event is full?</h3><p>The coordinator cannot confirm more volunteers than the places the opportunity lists.</p></div>
+          <div class="faq__item"><h3>Can coordinators apply to their own events?</h3><p>No. A coordinator cannot apply to an opportunity that their own organization runs.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer closing footer--statement" id="contact" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--word">
+      <div class="section-head--split">
+        <div><h2 id="close-h">Start logging verified hours</h2><p class="t-lead">Sign up as a volunteer or as an organization coordinator.</p></div>
+        {% if user.is_authenticated %}<a class="btn btn--primary" href="{% url 'dashboard' %}">Open your dashboard<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+        {% else %}<a class="btn btn--primary" href="{% url 'register' %}">Create an account<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>{% endif %}
+      </div>
+      <p class="close__word" aria-hidden="true">VolunteerConnect</p>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo" href="#top"><span class="mark mark--initial" aria-hidden="true">V</span>VolunteerConnect</a>
+          <p class="footer__lede">Volunteer sign-ups, hours and certificates</p>
+        </div>
+        <div class="span-2 footer__col"><h3>Product</h3><ul><li><a href="#app">Hour logs</a></li><li><a href="#features">Features</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Reports</h3><ul><li><a href="#reports">CSV and PDF</a></li><li><a href="#questions">Certificates</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Browse</h3><ul><li><a href="{% url 'opportunity-list' %}">Opportunities</a></li><li><a href="{% url 'organization-list' %}">Organizations</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Account</h3><ul><li><a href="{% url 'login' %}">Sign in</a></li><li><a href="#questions">Questions</a></li></ul></div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; 2026 VolunteerConnect</span>
+        <div class="socials"></div>
+        <a class="credits" href="{% url 'credits' %}">Photographs via Wikimedia Commons</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<nav class="actionbar" aria-label="Quick actions">
+  {% if user.is_authenticated %}<a class="btn btn--primary" href="{% url 'dashboard' %}">Open your dashboard</a>
+  {% else %}<a class="btn btn--primary" href="{% url 'register' %}">Create an account</a>{% endif %}
+</nav>
+
+<script type="module" src="{% static 'assets/system.js' %}"></script>
+<script type="module" src="{% static 'assets/motion/motion.js' %}"></script>
+<script type="module" src="{% static 'assets/layout/layout.js' %}"></script>
+</body>
+</html>

@@ -1,1 +1,18 @@
-{% extends 'base.html' %}{% block title %}Verify hours{% endblock %}{% block content %}<div class="form-card"><h1>Verify service hours</h1><p>{{ log.signup.volunteer.username }} submitted {{ log.hours }} hour(s).</p><form method="post">{% csrf_token %}<button class="button" name="decision" value="verified">Verify</button> <button class="button danger" name="decision" value="rejected">Reject</button></form></div>{% endblock %}
+{% extends 'base.html' %}{% block title %}Check hours{% endblock %}{% block content %}
+<div class="form-card">
+  <div class="form-card__head">
+    <p class="eyebrow">{{ log.signup.opportunity.title }}</p>
+    <h1>Check logged hours</h1>
+  </div>
+  <dl class="facts">
+    <div><dt>Volunteer</dt><dd>{{ log.signup.volunteer.get_full_name|default:log.signup.volunteer.username }}</dd></div>
+    <div><dt>Hours</dt><dd>{{ log.hours|floatformat:"-2" }}</dd></div>
+    <div><dt>Event date</dt><dd>{{ log.signup.opportunity.event_date|date:"l j F Y" }}</dd></div>
+    {% if log.notes %}<div><dt>Note</dt><dd>{{ log.notes }}</dd></div>{% endif %}
+  </dl>
+  <form method="post" class="actions">{% csrf_token %}
+    <button class="btn btn--primary" name="decision" value="verified">Verify hours</button>
+    <button class="btn btn--danger" name="decision" value="rejected">Reject</button>
+  </form>
+</div>
+{% endblock %}

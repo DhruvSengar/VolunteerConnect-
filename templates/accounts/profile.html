@@ -1,1 +1,11 @@
-{% extends 'base.html' %}{% block title %}Profile{% endblock %}{% block content %}<div class="form-card"><h1>Your profile</h1><form method="post">{% csrf_token %}{{ form.as_p }}<button class="button">Save changes</button></form></div>{% endblock %}
+{% extends 'base.html' %}{% block title %}Profile{% endblock %}{% block content %}
+<div class="form-card">
+  <div class="form-card__head">
+    <h1>Your profile</h1>
+    <p class="muted">Coordinators see this when they review your applications.</p>
+  </div>
+  <form method="post">{% csrf_token %}{{ form.as_p }}
+    <button class="btn btn--primary" type="submit">Save changes</button>
+  </form>
+</div>
+{% endblock %}

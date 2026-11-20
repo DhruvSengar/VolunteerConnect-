@@ -1,1 +1,25 @@
-{% extends 'base.html' %}{% block title %}Approvals{% endblock %}{% block content %}<div class="section"><h1>Organization approvals</h1>{% for org in organizations %}<div class="card"><h3>{{ org.name }}</h3><p>{{ org.description }}</p><form method="post">{% csrf_token %}<input type="hidden" name="org_id" value="{{ org.id }}"><button class="button" name="decision" value="approved">Approve</button> <button class="button danger" name="decision" value="rejected">Reject</button></form></div>{empty}<p>No pending organizations.</p>{% endfor %}</div>{% endblock %}
+{% extends 'base.html' %}{% block title %}Approvals{% endblock %}{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <p class="eyebrow">Administration</p>
+    <h1>Organization approvals</h1>
+    <p class="lead">Approved organizations can post opportunities straight away.</p>
+  </div>
+</div>
+{% if organizations %}
+<div class="list">
+  {% for org in organizations %}
+  <div class="list__row">
+    <span class="avatar" aria-hidden="true">{{ org.name|first|upper }}</span>
+    <div class="list__main"><strong>{{ org.name }}</strong><span>{{ org.description|truncatewords:30 }}</span></div>
+    <form method="post">{% csrf_token %}<input type="hidden" name="org_id" value="{{ org.id }}">
+      <button class="btn btn--primary btn--sm" name="decision" value="approved">Approve</button>
+      <button class="btn btn--danger btn--sm" name="decision" value="rejected">Reject</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty"><strong>Nothing to review</strong><span>New organizations appear here when coordinators register them.</span></div>
+{% endif %}
+{% endblock %}

@@ -1,1 +1,61 @@
-{% load static %}<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{% block title %}VolunteerConnect{% endblock %}</title><link rel="stylesheet" href="{% static 'css/style.css' %}"></head><body><nav><a class="brand" href="{% url 'home' %}">VolunteerConnect</a><div class="navlinks"><a href="{% url 'opportunity-list' %}">Opportunities</a>{% if user.is_authenticated %}<a href="{% url 'dashboard' %}">Dashboard</a><a href="{% url 'profile' %}">Profile</a><a href="{% url 'report' %}">Reports</a><form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="link">Logout</button></form>{% else %}<a href="{% url 'login' %}">Login</a><a class="button small" href="{% url 'register' %}">Join</a>{% endif %}</div></nav><main>{% for message in messages %}<div class="alert">{{ message }}</div>{% endfor %}{% block content %}{% endblock %}</main><footer>VolunteerConnect · Community service, verified.</footer><script src="{% static 'js/app.js' %}"></script></body></html>
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}VolunteerConnect{% endblock %} · VolunteerConnect</title>
+<link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+<meta name="theme-color" content="#fbf6ec">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Inter:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="container topbar__inner">
+    <a class="brand" href="{% url 'home' %}"><span class="brand__mark" aria-hidden="true">V</span>VolunteerConnect</a>
+    <button class="topbar__toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+    {% with url=request.resolver_match.url_name %}
+    <nav class="topbar__nav" id="site-nav" aria-label="Main">
+      <a href="{% url 'opportunity-list' %}" {% if url == 'opportunity-list' or url == 'opportunity-detail' %}aria-current="page"{% endif %}>Opportunities</a>
+      <a href="{% url 'organization-list' %}" {% if url == 'organization-list' %}aria-current="page"{% endif %}>Organizations</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}" {% if url == 'dashboard' %}aria-current="page"{% endif %}>Dashboard</a>
+        <a href="{% url 'certificates' %}" {% if url == 'certificates' %}aria-current="page"{% endif %}>Certificates</a>
+        <a href="{% url 'report' %}" {% if url == 'report' %}aria-current="page"{% endif %}>Reports</a>
+        {% if user.is_superuser %}<a href="{% url 'organization-approval' %}" {% if url == 'organization-approval' %}aria-current="page"{% endif %}>Approvals</a>{% endif %}
+        <span class="topbar__spacer"></span>
+        <a href="{% url 'profile' %}" class="topbar__user" {% if url == 'profile' %}aria-current="page"{% endif %}><span class="avatar" aria-hidden="true">{{ user.username|first|upper }}</span>{{ user.first_name|default:user.username }}</a>
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="btn btn--ghost btn--sm" type="submit">Log out</button></form>
+      {% else %}
+        <span class="topbar__spacer"></span>
+        <a href="{% url 'login' %}" {% if url == 'login' %}aria-current="page"{% endif %}>Sign in</a>
+        <a class="btn btn--primary btn--sm" href="{% url 'register' %}">Create an account</a>
+      {% endif %}
+    </nav>
+    {% endwith %}
+  </div>
+</header>
+
+<main id="main" class="container main">
+  {% if messages %}
+  <div class="messages" role="status">
+    {% for message in messages %}<p class="alert{% if message.tags %} alert--{{ message.tags }}{% endif %}">{{ message }}</p>{% endfor %}
+  </div>
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <span>&copy; 2026 VolunteerConnect · Volunteer sign-ups, hours and certificates</span>
+    <a href="{% url 'credits' %}">Photograph credits</a>
+  </div>
+</footer>
+<script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

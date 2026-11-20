@@ -1,1 +1,30 @@
-{% extends 'base.html' %}{% block title %}Applications{% endblock %}{% block content %}<div class="section"><h1>Applications for {{ opportunity.title }}</h1>{% for signup in signups %}<div class="card"><strong>{{ signup.volunteer.username }}</strong> · {{ signup.status }}<form method="post">{% csrf_token %}<input type="hidden" name="signup_id" value="{{ signup.id }}"><button class="button" name="decision" value="confirmed">Confirm</button> <button class="button danger" name="decision" value="rejected">Reject</button></form></div>{empty}<p>No applications.</p>{% endfor %}</div>{% endblock %}
+{% extends 'base.html' %}{% block title %}Applications{% endblock %}{% block content %}
+<p class="back"><a class="link" href="{% url 'opportunity-detail' opportunity.pk %}">← {{ opportunity.title }}</a></p>
+<div class="page-head">
+  <div class="page-head__text">
+    <p class="eyebrow">Applications</p>
+    <h1>{{ opportunity.title }}</h1>
+    <p class="lead">{{ opportunity.confirmed_count }} of {{ opportunity.capacity }} places confirmed · {{ opportunity.event_date|date:"l j F" }}</p>
+  </div>
+</div>
+{% if signups %}
+<div class="list">
+  {% for signup in signups %}
+  <div class="list__row">
+    <span class="avatar" aria-hidden="true">{{ signup.volunteer.username|first|upper }}</span>
+    <div class="list__main"><strong>{{ signup.volunteer.get_full_name|default:signup.volunteer.username }}</strong><span>Applied {{ signup.applied_at|timesince }} ago</span></div>
+    <span class="chip chip--{{ signup.status }}">{{ signup.get_status_display }}</span>
+    {% if signup.status == 'pending' %}
+    <form method="post">{% csrf_token %}<input type="hidden" name="signup_id" value="{{ signup.id }}">
+      <button class="btn btn--primary btn--sm" name="decision" value="confirmed" {% if not opportunity.available_slots %}disabled title="Every place is filled"{% endif %}>Confirm</button>
+      <button class="btn btn--danger btn--sm" name="decision" value="rejected">Reject</button>
+    </form>
+    {% endif %}
+    {% for log in signup.hour_logs.all %}{% if log.status == 'pending' %}<a class="btn btn--secondary btn--sm" href="{% url 'verify-hours' log.id %}">Check {{ log.hours|floatformat:"-2" }} h</a>{% endif %}{% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty"><strong>No applications yet</strong><span>Volunteers who apply show up here for you to confirm.</span></div>
+{% endif %}
+{% endblock %}

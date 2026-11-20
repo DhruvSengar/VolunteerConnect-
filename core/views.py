@@ -4,26 +4,35 @@ from django.db import IntegrityError, transaction
 from django.db.models import Q
 from django.http import JsonResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
 from django.utils import timezone
 from accounts.models import Organization
 from .forms import HourLogForm, OpportunityForm, ReviewForm
 from .models import Cause, Certificate, HourLog, Milestone, Opportunity, Review, Signup
 
-def opportunity_list(request):
+def search_opportunities(query):
+    """Open opportunities of approved organizations matching the query, soonest first (the list page and live search share it)."""
     qs = Opportunity.objects.filter(is_active=True, organization__status='approved').select_related('organization').prefetch_related('causes')
-    query = request.GET.get('q', '').strip()
     if query: qs = qs.filter(Q(title__icontains=query) | Q(description__icontains=query) | Q(location__icontains=query))
-    return render(request, 'core/opportunity_list.html', {'opportunities': qs.order_by('event_date'), 'causes': Cause.objects.all(), 'query': query})
+    return qs.order_by('event_date')
+
+def opportunity_list(request):
+    query = request.GET.get('q', '').strip()
+    return render(request, 'core/opportunity_list.html', {'opportunities': search_opportunities(query), 'causes': Cause.objects.all(), 'query': query})
 
 def opportunity_search(request):
     query = request.GET.get('q', '').strip()
-    qs = Opportunity.objects.filter(is_active=True, organization__status='approved').filter(Q(title__icontains=query) | Q(location__icontains=query))[:10]
-    return JsonResponse({'results': [{'id': x.id, 'title': x.title, 'location': x.location, 'slots': x.available_slots} for x in qs]})
+    opportunities = list(search_opportunities(query))
+    # html: the same cards the list page renders, escaped by the template engine
+    html = render_to_string('core/_opportunity_results.html', {'opportunities': opportunities, 'query': query}, request=request)
+    return JsonResponse({'results': [{'id': x.id, 'title': x.title, 'location': x.location, 'slots': x.available_slots} for x in opportunities], 'html': html})
 
 def opportunity_detail(request, pk):
     opportunity = get_object_or_404(Opportunity, pk=pk)
     is_organizer = request.user.is_authenticated and opportunity.organization.coordinators.filter(pk=request.user.pk).exists()
-    return render(request, 'core/opportunity_detail.html', {'opportunity': opportunity, 'is_organizer': is_organizer})
+    my_signup = opportunity.signups.filter(volunteer=request.user).first() if request.user.is_authenticated else None
+    can_review = bool(my_signup and my_signup.status == 'completed' and not opportunity.reviews.filter(volunteer=request.user).exists())
+    return render(request, 'core/opportunity_detail.html', {'opportunity': opportunity, 'is_organizer': is_organizer, 'my_signup': my_signup, 'can_review': can_review})
 
 @login_required
 def opportunity_create(request):
@@ -68,7 +77,7 @@ def manage_signups(request, pk):
             if decision == 'confirmed' and opportunity.available_slots <= 0: messages.error(request, 'No available capacity.'); return redirect('manage-signups', pk)
             signup.status = decision; signup.save(update_fields=['status', 'updated_at'])
         return redirect('manage-signups', pk)
-    return render(request, 'core/manage_signups.html', {'opportunity': opportunity, 'signups': opportunity.signups.select_related('volunteer')})
+    return render(request, 'core/manage_signups.html', {'opportunity': opportunity, 'signups': opportunity.signups.select_related('volunteer').prefetch_related('hour_logs')})
 
 @login_required
 def submit_hours(request, signup_id):

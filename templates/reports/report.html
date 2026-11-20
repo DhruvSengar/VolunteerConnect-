@@ -1,1 +1,17 @@
-{% extends 'base.html' %}{% block title %}Reports{% endblock %}{% block content %}<div class="page-head"><div><p class="eyebrow">YOUR IMPACT</p><h1>Service report</h1></div><div><a class="button" href="{% url 'export-csv' %}">Download CSV</a> <a class="button" href="{% url 'pdf-report' %}">Download PDF</a></div></div><div class="stat"><strong>{{ hours }}</strong><span>verified service hours</span></div><p>You have participated in {{ signups }} opportunity application(s).</p>{% endblock %}
+{% extends 'base.html' %}{% block title %}Reports{% endblock %}{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <p class="eyebrow">Reports</p>
+    <h1>Your service report</h1>
+    <p class="lead">Download every hour log as CSV, or a service report as PDF for school, college or work.</p>
+  </div>
+  <div class="actions">
+    <a class="btn btn--primary" href="{% url 'pdf-report' %}">Download PDF</a>
+    <a class="btn btn--secondary" href="{% url 'export-csv' %}">Download CSV</a>
+  </div>
+</div>
+<div class="grid grid--2">
+  <div class="stat"><strong>{{ hours|floatformat:"-1" }}</strong><span>verified service hours</span></div>
+  <div class="stat"><strong>{{ signups }}</strong><span>applications to opportunities</span></div>
+</div>
+{% endblock %}
