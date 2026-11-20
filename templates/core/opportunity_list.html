@@ -1,1 +1,21 @@
-{% extends 'base.html' %}{% block title %}Opportunities{% endblock %}{% block content %}<div class="page-head"><div><p class="eyebrow">DISCOVER</p><h1>Volunteer opportunities</h1></div>{% if user.is_authenticated %}<a class="button" href="{% url 'opportunity-create' %}">Create opportunity</a>{% endif %}</div><div class="search"><input id="live-search" placeholder="Search by title or location" value="{{ query }}"><span>⌕</span></div><div id="search-results"></div><div class="grid three">{% for opportunity in opportunities %}<article class="card"><span class="tag">{{ opportunity.event_date }}</span><h2>{{ opportunity.title }}</h2><p>{{ opportunity.description|truncatewords:20 }}</p><p class="muted">{{ opportunity.organization.name }} · {{ opportunity.location }}</p><a href="{% url 'opportunity-detail' opportunity.pk %}">View opportunity →</a></article>{empty}<p>No matching opportunities.</p>{% endfor %}</div>{% endblock %}
+{% extends 'base.html' %}{% block title %}Opportunities{% endblock %}{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <p class="eyebrow">Opportunities</p>
+    <h1>Find volunteer work near you</h1>
+    <p class="lead">Every opportunity comes from an approved organization. Apply, get confirmed, then log your hours.</p>
+  </div>
+  {% if user.is_authenticated %}<a class="btn btn--secondary" href="{% url 'opportunity-create' %}">Post an opportunity</a>{% endif %}
+</div>
+<form class="search" method="get" role="search">
+  <svg width="20" height="20" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  <label class="visually-hidden" for="live-search">Search opportunities</label>
+  <input id="live-search" name="q" type="search" autocomplete="off" placeholder="Search by title or location" value="{{ query }}">
+  <p class="search__status" id="search-status" aria-live="polite">{% if query %}{{ opportunities|length }} result{{ opportunities|length|pluralize }} for “{{ query }}”{% endif %}</p>
+</form>
+<div class="grid grid--3" id="search-results" hidden></div>
+<div class="grid grid--3" id="opportunity-grid">
+  {% for opportunity in opportunities %}{% include 'core/_opportunity_card.html' with show_description=True %}
+  {% empty %}<div class="empty"><strong>No matching opportunities</strong><span>Try another word, or clear the search to see everything.</span>{% if query %}<a class="link link--arrow" href="{% url 'opportunity-list' %}">Clear the search</a>{% endif %}</div>{% endfor %}
+</div>
+{% endblock %}

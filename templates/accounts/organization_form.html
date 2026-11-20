@@ -1,1 +1,11 @@
-{% extends 'base.html' %}{% block title %}Organization{% endblock %}{% block content %}<div class="form-card"><h1>Register an organization</h1><p class="muted">An administrator will review your submission.</p><form method="post">{% csrf_token %}{{ form.as_p }}<button class="button">Submit organization</button></form></div>{% endblock %}
+{% extends 'base.html' %}{% block title %}Register an organization{% endblock %}{% block content %}
+<div class="form-card">
+  <div class="form-card__head">
+    <h1>Register an organization</h1>
+    <p class="muted">An administrator reviews each organization. Once approved, you can post opportunities.</p>
+  </div>
+  <form method="post">{% csrf_token %}{{ form.as_p }}
+    <button class="btn btn--primary" type="submit">Submit for approval</button>
+  </form>
+</div>
+{% endblock %}

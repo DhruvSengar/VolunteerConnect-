@@ -1,1 +1,12 @@
-{% extends 'base.html' %}{% block title %}Review{% endblock %}{% block content %}<div class="form-card"><h1>Review {{ opportunity.title }}</h1><form method="post">{% csrf_token %}{{ form.as_p }}<button class="button">Submit review</button></form></div>{% endblock %}
+{% extends 'base.html' %}{% block title %}Review{% endblock %}{% block content %}
+<div class="form-card">
+  <div class="form-card__head">
+    <p class="eyebrow">{{ opportunity.organization.name }}</p>
+    <h1>Review {{ opportunity.title }}</h1>
+    <p class="muted">Your review helps other volunteers choose.</p>
+  </div>
+  <form method="post">{% csrf_token %}{{ form.as_p }}
+    <button class="btn btn--primary" type="submit">Post review</button>
+  </form>
+</div>
+{% endblock %}

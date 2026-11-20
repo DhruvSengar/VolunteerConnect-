@@ -47,11 +47,18 @@ def organization_list(request):
 
 @login_required
 def dashboard(request):
-    from core.models import HourLog, Opportunity, Signup
+    from core.models import HourLog, Milestone, Opportunity, Signup
     hours = sum(x.hours for x in HourLog.objects.filter(signup__volunteer=request.user, status='verified'))
     organizations = Organization.objects.filter(coordinators=request.user)
     managed = Opportunity.objects.filter(organization__in=organizations).select_related('organization')
-    return render(request, 'dashboard.html', {'opportunities': Opportunity.objects.filter(is_active=True).select_related('organization')[:6], 'signups': Signup.objects.filter(volunteer=request.user).select_related('opportunity'), 'verified_hours': hours, 'organizations': organizations, 'managed_opportunities': managed})
+    next_milestone = Milestone.objects.filter(is_active=True, required_hours__gt=hours).order_by('required_hours').first()
+    pending_logs = HourLog.objects.filter(status='pending', signup__opportunity__organization__in=organizations).select_related('signup__volunteer', 'signup__opportunity')
+    return render(request, 'dashboard.html', {
+        'opportunities': Opportunity.objects.filter(is_active=True, organization__status='approved').select_related('organization').order_by('event_date')[:6],
+        'signups': Signup.objects.filter(volunteer=request.user).select_related('opportunity__organization').order_by('-applied_at'),
+        'verified_hours': hours, 'organizations': organizations, 'managed_opportunities': managed,
+        'next_milestone': next_milestone, 'progress': min(int(hours * 100 / next_milestone.required_hours), 100) if next_milestone else 100,
+        'pending_logs': pending_logs, 'certificate_count': request.user.certificates.count()})
 
 @user_passes_test(lambda user: user.is_superuser)
 def organization_approval(request):

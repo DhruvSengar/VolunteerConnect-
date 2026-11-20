@@ -1,1 +1,25 @@
-{% extends 'base.html' %}{% block title %}Certificates{% endblock %}{% block content %}<div class="section"><h1>Your certificates</h1>{% for certificate in certificates %}<div class="card"><h3>{{ certificate.milestone.name }}</h3><p>{{ certificate.milestone.required_hours }} verified hours · ID {{ certificate.certificate_id }}</p><a class="button" href="{% url 'certificate-pdf' certificate.certificate_id %}">Download PDF</a> <a href="{% url 'certificate-verify' certificate.certificate_id %}">Public verification</a></div>{empty}<p>Certificates appear after verified milestones are reached.</p>{% endfor %}</div>{% endblock %}
+{% extends 'base.html' %}{% block title %}Certificates{% endblock %}{% block content %}
+<div class="page-head">
+  <div class="page-head__text">
+    <p class="eyebrow">Certificates</p>
+    <h1>Your certificates</h1>
+    <p class="lead">A certificate is issued at 25, 50 and 100 verified hours. Anyone can check one at its public page.</p>
+  </div>
+</div>
+<div class="grid grid--3">
+  {% for certificate in certificates %}
+  <article class="card">
+    <div class="certificate__seal" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/></svg></div>
+    <h2 class="card__title">{{ certificate.milestone.name }}</h2>
+    <div class="card__meta"><span>{{ certificate.milestone.required_hours }} verified hours</span><span>Issued {{ certificate.issued_at|date:"j M Y" }}</span></div>
+    <code class="muted small">{{ certificate.certificate_id }}</code>
+    <div class="card__foot">
+      <a class="btn btn--primary btn--sm" href="{% url 'certificate-pdf' certificate.certificate_id %}">Download PDF</a>
+      <a class="link" href="{% url 'certificate-verify' certificate.certificate_id %}">Public page</a>
+    </div>
+  </article>
+  {% empty %}
+  <div class="empty"><strong>No certificates yet</strong><span>Your first one comes at 25 verified hours.</span><a class="link link--arrow" href="{% url 'opportunity-list' %}">Find an opportunity</a></div>
+  {% endfor %}
+</div>
+{% endblock %}
