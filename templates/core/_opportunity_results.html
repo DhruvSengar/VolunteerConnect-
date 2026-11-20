@@ -1,0 +1,2 @@
+{% for opportunity in opportunities %}{% include 'core/_opportunity_card.html' with show_description=True %}
+{% empty %}<div class="empty"><strong>No matching opportunities</strong><span>Try a town, a sector or part of a title.</span>{% if query %}<a class="link link--arrow" href="{% url 'opportunity-list' %}">Clear the search</a>{% endif %}</div>{% endfor %}

@@ -77,3 +77,11 @@ class PageRenderTests(TestCase):
         data = self.client.get(reverse('opportunity-search'), {'q': 'a'}).json()
         self.assertTrue(data['results'])
         self.assertEqual(set(data['results'][0]), {'id', 'title', 'location', 'slots'})
+        # live results are the list page's own cards, in the same order
+        page = self.client.get(reverse('opportunity-list'), {'q': 'a'}).context['opportunities']
+        self.assertEqual([r['id'] for r in data['results']], [o.id for o in page])
+        self.assertIn('date-badge', data['html'])
+        self.assertIn(page[0].organization.name, data['html'])
+        empty = self.client.get(reverse('opportunity-search'), {'q': 'zzzz'}).json()
+        self.assertEqual(empty['results'], [])
+        self.assertIn('No matching opportunities', empty['html'])

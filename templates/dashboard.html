@@ -28,7 +28,7 @@
 
 {% if signups or not organizations %}
 <div class="grid grid--3">
-  <div class="stat stat--accent">
+  <div class="stat">
     <strong>{{ verified_hours|floatformat:"-1" }}</strong>
     <span>{% if next_milestone %}verified hours · {{ next_milestone.required_hours }} for the next certificate{% else %}verified hours · every milestone reached{% endif %}</span>
     <div class="progress" role="progressbar" aria-label="Progress to the next certificate" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"><i style="--k: {{ progress }}%"></i></div>

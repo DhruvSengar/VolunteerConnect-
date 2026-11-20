@@ -15,7 +15,6 @@
 </form>
 <div class="grid grid--3" id="search-results" hidden></div>
 <div class="grid grid--3" id="opportunity-grid">
-  {% for opportunity in opportunities %}{% include 'core/_opportunity_card.html' with show_description=True %}
-  {% empty %}<div class="empty"><strong>No matching opportunities</strong><span>Try another word, or clear the search to see everything.</span>{% if query %}<a class="link link--arrow" href="{% url 'opportunity-list' %}">Clear the search</a>{% endif %}</div>{% endfor %}
+  {% include 'core/_opportunity_results.html' %}
 </div>
 {% endblock %}

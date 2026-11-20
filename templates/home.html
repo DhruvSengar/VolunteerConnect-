@@ -1,5 +1,5 @@
 {% load static %}<!doctype html>
-<html lang="en" data-type="software" data-radius="soft" data-ground="sage" data-buttons="pill" data-motion>
+<html lang="en" data-type="software" data-radius="soft" data-ground="sand" data-buttons="solid" data-motion>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -11,13 +11,13 @@
 <meta property="og:image" content="{% static 'share.jpg' %}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
-<meta name="theme-color" content="#f6f6f0">
+<meta name="theme-color" content="#fbf6ec">
 <!-- <link rel="canonical" href="https://[the project's domain]/"> once the app has a public domain -->
 <meta name="site-kind" content="software">
 <meta name="page-type" content="software">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Inter:wght@400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'assets/system.css' %}">
 <link rel="stylesheet" href="{% static 'assets/ui/cards.css' %}">
 <link rel="stylesheet" href="{% static 'assets/motion/motion.css' %}">
@@ -26,14 +26,14 @@
 <link rel="stylesheet" href="{% static 'assets/icons/icon.css' %}">
 <style>
 :root {
-  --p-bg: #f6f6f0; --p-surface: #dcefe7; --p-ink: #17332f; --p-muted: #596b67;
-  --p-accent: #bb4e25; --p-accent-ink: #f6f6f0; --p-action: #bb4e25; --p-action-ink: #f6f6f0;
-  --p-inv-bg: #17332f; --p-inv-surface: #253f3b; --p-inv-ink: #f6f6f0; --p-inv-muted: #a2aca7;
-  --p-inv-accent: #f6f6f0; --p-inv-accent-ink: #17332f; --p-inv-action: #f6f6f0; --p-inv-action-ink: #17332f;
-  --font-display: "Urbanist", system-ui, sans-serif;
-  --font-text: "Urbanist", system-ui, sans-serif;
-  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  --display-weight: 500;
+  --p-bg: #fbf6ec; --p-surface: #ffffff; --p-ink: #2a1e12; --p-muted: #6b5a46;
+  --p-accent: #a3401f; --p-accent-ink: #fbf6ec; --p-action: #f0a81c; --p-action-ink: #2a1e12;
+  --p-inv-bg: #2a1e12; --p-inv-surface: #3a2b1c; --p-inv-ink: #fbf6ec; --p-inv-muted: #c9b9a3;
+  --p-inv-accent: #f0a81c; --p-inv-accent-ink: #2a1e12; --p-inv-action: #f0a81c; --p-inv-action-ink: #2a1e12;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-text: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --display-weight: 650;
   --display-tracking: -0.03em;
   --display-tracking-xl: -0.04em;
 }
@@ -42,7 +42,7 @@
 <link rel="stylesheet" href="{% static 'assets/ui/window/fragment.css' %}">
 <link rel="stylesheet" href="{% static 'assets/ui/doc/fragment.css' %}">
 <link rel="stylesheet" href="{% static 'assets/ui/files/fragment.css' %}">
-<link rel="stylesheet" href="{% static 'assets/ui/search/fragment.css' %}">
+<link rel="stylesheet" href="{% static 'assets/ui/calendar/fragment.css' %}">
 <link rel="stylesheet" href="{% static 'assets/ui/stat/fragment.css' %}">
 <link rel="stylesheet" href="{% static 'assets/ui/checklist/fragment.css' %}">
 <link rel="stylesheet" href="{% static 'assets/ui/notify/fragment.css' %}">
@@ -55,15 +55,15 @@
 <style>
   /* the hero collage's pieces: sized in % of the collage, their text in container units */
   .ly-collage { container-type: inline-size; }
-  .ly-collage .ly-piece { box-shadow: 0 1px 2px rgb(23 51 47 / .1), 0 22px 48px -22px rgb(23 51 47 / .4); }
+  .ly-collage .ly-piece { box-shadow: 0 1px 2px rgb(42 30 18 / .1), 0 22px 48px -22px rgb(42 30 18 / .4); }
   .ly-collage .pc-card { background: #fff; color: var(--p-ink); padding: 3.4cqw 3.8cqw; display: grid; align-content: start; gap: 1.6cqw; font: 400 max(13px, 2cqw)/1.35 var(--font-text); }
   .pc-card .lbl { color: var(--p-muted); font-size: max(13px, 1.8cqw); font-weight: 500; }
   .pc-card h4 { margin: 0; font: 500 max(16px, 3.6cqw)/1.1 var(--font-display); letter-spacing: -0.02em; }
-  .pc-card .ln { display: flex; justify-content: space-between; gap: 2cqw; padding-top: 1.4cqw; border-top: 1px solid rgb(23 51 47 / .1); }
+  .pc-card .ln { display: flex; justify-content: space-between; gap: 2cqw; padding-top: 1.4cqw; border-top: 1px solid rgb(42 30 18 / .1); }
   .pc-card .ln em { font-style: normal; font-weight: 500; }
   .pc-card .ln em.is-ok { color: #1f7a4d; }
   .pc-card .big { font: 500 max(28px, 8cqw)/1 var(--font-display); letter-spacing: -0.03em; }
-  .pc-card .act { justify-self: start; margin-top: .6cqw; background: var(--p-action); color: var(--p-action-ink); border-radius: 99px; padding: 1cqw 2.6cqw; font-weight: 500; }
+  .pc-card .act { justify-self: start; margin-top: .6cqw; background: var(--p-action); color: var(--p-action-ink); border-radius: 10px; padding: 1cqw 2.6cqw; font-weight: 500; }
   @media (max-width: 639px) { .pc-card .ln:nth-of-type(n+3), .ly-collage .pc-side { display: none; } }
 
   /* the app window: sections-library.md, app-frame */
@@ -88,6 +88,17 @@
     .app > .app__pane + .app__pane { border-top: 0; }
   }
 
+  /* the kit's lit ground (the closing footer, the feature panels) in Marigold cream, not the kit's tan sand */
+  html[data-ground] { --ground-bg: #fbf6ec; --ground-surface: #fbf6ec; --ground-ink: #2a1e12; --ground-muted: #6b5a46; --ground-accent: #fde7b0; }
+  /* the logo tile in marigold, as in the app header and the favicon */
+  .mark.mark--initial { background: var(--p-action); color: var(--p-action-ink); }
+  /* Fraunces sets wider than a grotesk: the triptych headline a step smaller so it holds in 3 lines */
+  .hero--triptych h1 { font-size: calc(var(--ly-h1-side) * .86); letter-spacing: -0.035em; }
+  /* reports: the four files as a 2 x 2 grid held inside the frame, centred, none cut by the edge */
+  #reports .stage > .reports-files { left: 56px; right: 56px; top: 50%; translate: 0 -50%; }
+  #reports .reports-files > .ui-files { min-width: 0; max-width: none; width: 100%; }
+  #reports .reports-files .ui-files__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 639px) { #reports .stage > .reports-files { left: 20px; right: 20px; } }
   #features .panel { --p-h: 280px; }
   .hero--triptych .hero__cta .btn { height: var(--btn-h); font-size: var(--t-body); padding-inline: var(--s-5); }
   /* the open log's note sits over the text on a phone: the log alone there */
@@ -101,7 +112,7 @@
 <!-- type: software (site-kind software)
      deal: hero triptych, nav nav-mega, close close-word, footer footer-statement, rhythm surface-pairs,
      buttons pill, mark initial, grounds none dealt, lit ground sky
-     palette: the project's own (cream ground, deep green ink, mint surface, terracotta accent) via start.mjs brand, type urbanist, radius soft
+     palette: Marigold, chosen by the client from a scheme sheet (cream ground, espresso ink, marigold action, brick accent), type Fraunces + Inter, radius soft, buttons solid
      effect: grain-gradient in the #reports [data-visual] frame; card grounds: none fitted (lit ground plain)
      moments: iris-opens on #questions (the surface band)
      photographs: stand-ins from Wikimedia Commons, to be replaced by the project's own -->
@@ -301,8 +312,8 @@
           </ul>
           <a class="link" href="#questions">Read how certificates work</a>
         </div>
-        <div class="frame frame--split frame--fill span-6 start-7" data-visual data-fx="grain-gradient" data-fx-palette='{"bg":"#cdd6c6","surface":"#dce3d6","ink":"#262d24","accent":"#6c8e63"}' data-fx-seed="7">
-          <div class="stage stage--fade-br"><div class="at-corner wide to-edge" style="--w: 680px; --ax: 56px; --ay: 56px">
+        <div class="frame frame--split frame--fill span-6 start-7" data-visual data-fx="grain-gradient" data-fx-palette='{"bg":"#fde7b0","surface":"#fbf6ec","ink":"#2a1e12","accent":"#f0a81c"}' data-fx-seed="7">
+          <div class="stage stage--fade-br"><div class="at-corner reports-files">
             <div class="ui ui-files" data-ui="files" data-ui-loop data-reading="Reading {n} of {total}">
               <div class="ui-files__status"><span class="ui-dot"></span><span data-files-status>4 files ready</span></div>
               <ul class="ui-files__grid">
@@ -350,23 +361,32 @@
         </div>
         <div class="grid">
           <article class="card card--row card--open span-6 m-nolift">
-            <h3>Volunteer search as you type</h3>
-            <p>Search by title or location and the list updates without a reload. Each result shows the places still open.</p>
+            <h3>Volunteer dates for the week ahead</h3>
+            <p>The dashboard lists coming opportunities in date order, each with its time and the places still open.</p>
             <div class="panel">
-              <div class="stage stage--fade-b"><div class="at-rise fit to-edge" style="--fit-max: 400px; --ax: max(24px, 50% - 200px); --ay: 56px; --ay-sm: 24px" data-ui-loop>
-                <div class="ui ui-panel ui-search" data-ui="search">
-                  <div class="ui-search__field">
-                    <svg class="ui-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>
-                    <span class="ui-search__q"><span data-search-q>noida</span><i class="ui-search__caret"></i></span>
-                    <kbd class="ui-search__kbd">Ctrl K</kbd>
+              <div class="stage stage--fade-b"><div class="at-rise fit to-edge" style="--fit-max: 330px; --ax: max(24px, 50% - 165px); --ay: 28px; --ay-sm: 20px" data-ui-loop>
+                <div class="ui ui-panel ui-calendar" data-ui="calendar" data-start="23" data-end="29" data-month="Nov">
+                  <div class="ui-cal__head">
+                    <div class="ui-cal__month">November <span>2026</span></div>
+                    <span class="ui-spacer"></span>
+                    <span class="ui-chip ui-chip--plain ui-chip--ink" data-cal-range>Nov 23 – 29</span>
+                    <span class="ui-cal__nav" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><path d="M10 4 6 8l4 4"/></svg></span>
+                    <span class="ui-cal__nav" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 16 16"><path d="m6 4 4 4-4 4"/></svg></span>
                   </div>
-                  <div class="ui-search__group">Opportunities</div>
-                  <ul class="ui-search__list" data-search-list>
-                    <li class="ui-search__row is-sel"><span class="ui-search__ico"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="7" r="2.5"/><path d="M8 14s4.5-3.8 4.5-7a4.5 4.5 0 0 0-9 0c0 3.2 4.5 7 4.5 7z"/></svg></span><span class="ui-search__t">Okhla clean-up, <b>Noida</b></span><span class="ui-search__m">18 left</span></li>
-                    <li class="ui-search__row"><span class="ui-search__ico"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="7" r="2.5"/><path d="M8 14s4.5-3.8 4.5-7a4.5 4.5 0 0 0-9 0c0 3.2 4.5 7 4.5 7z"/></svg></span><span class="ui-search__t">Tree planting, Sector 62, <b>Noida</b></span><span class="ui-search__m">40 left</span></li>
-                    <li class="ui-search__row"><span class="ui-search__ico"><svg class="ui-icon" viewBox="0 0 16 16"><circle cx="8" cy="7" r="2.5"/><path d="M8 14s4.5-3.8 4.5-7a4.5 4.5 0 0 0-9 0c0 3.2 4.5 7 4.5 7z"/></svg></span><span class="ui-search__t">Maths tutoring, Sector 18, <b>Noida</b></span><span class="ui-search__m">12 left</span></li>
-                  </ul>
-                  <div class="ui-search__foot"><span><kbd>&uarr;</kbd><kbd>&darr;</kbd> to move</span><span><kbd>Enter</kbd> to open</span></div>
+                  <div class="ui-cal__dow" aria-hidden="true"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+                  <div class="ui-cal__days">
+                    <span class="ui-cal__d is-out"><b>26</b></span><span class="ui-cal__d is-out"><b>27</b></span><span class="ui-cal__d is-out"><b>28</b></span><span class="ui-cal__d is-out"><b>29</b></span><span class="ui-cal__d is-out"><b>30</b></span><span class="ui-cal__d is-out"><b>31</b></span><span class="ui-cal__d" data-d="1"><b>1</b></span>
+                    <span class="ui-cal__d" data-d="2"><b>2</b></span><span class="ui-cal__d" data-d="3"><b>3</b></span><span class="ui-cal__d" data-d="4"><b>4</b></span><span class="ui-cal__d" data-d="5"><b>5</b></span><span class="ui-cal__d" data-d="6"><b>6</b></span><span class="ui-cal__d" data-d="7"><b>7</b></span><span class="ui-cal__d" data-d="8"><b>8</b></span>
+                    <span class="ui-cal__d" data-d="9"><b>9</b></span><span class="ui-cal__d" data-d="10"><b>10</b></span><span class="ui-cal__d" data-d="11"><b>11</b></span><span class="ui-cal__d" data-d="12"><b>12</b></span><span class="ui-cal__d" data-d="13"><b>13</b></span><span class="ui-cal__d" data-d="14"><b>14</b></span><span class="ui-cal__d" data-d="15"><b>15</b></span>
+                    <span class="ui-cal__d" data-d="16"><b>16</b></span><span class="ui-cal__d" data-d="17"><b>17</b></span><span class="ui-cal__d" data-d="18"><b>18</b></span><span class="ui-cal__d" data-d="19"><b>19</b></span><span class="ui-cal__d" data-d="20"><b>20</b></span><span class="ui-cal__d is-today" data-d="21"><b>21</b></span><span class="ui-cal__d" data-d="22"><b>22</b></span>
+                    <span class="ui-cal__d is-start" data-d="23"><b>23</b></span><span class="ui-cal__d is-in is-mark" data-d="24"><b>24</b></span><span class="ui-cal__d is-in" data-d="25"><b>25</b></span><span class="ui-cal__d is-in" data-d="26"><b>26</b></span><span class="ui-cal__d is-in" data-d="27"><b>27</b></span><span class="ui-cal__d is-in" data-d="28"><b>28</b></span><span class="ui-cal__d is-end" data-d="29"><b>29</b></span>
+                    <span class="ui-cal__d" data-d="30"><b>30</b></span><span class="ui-cal__d is-out"><b>1</b></span><span class="ui-cal__d is-out"><b>2</b></span><span class="ui-cal__d is-out"><b>3</b></span><span class="ui-cal__d is-out"><b>4</b></span><span class="ui-cal__d is-out"><b>5</b></span><span class="ui-cal__d is-out"><b>6</b></span>
+                  </div>
+                  <div class="ui-cal__events">
+                    <div class="ui-cal__ev" data-ev="23"><span class="ui-cal__date"><b>23</b><i>Nov</i></span><span class="ui-cal__evtext"><span class="ui-cal__evtitle">Weekend meal kit packing</span><span class="ui-cal__evsub">Laxmi Nagar, Delhi · 24 of 25 places left</span></span></div>
+                    <div class="ui-cal__ev" data-ev="26"><span class="ui-cal__date"><b>26</b><i>Nov</i></span><span class="ui-cal__evtext"><span class="ui-cal__evtitle">Okhla Bird Sanctuary clean-up</span><span class="ui-cal__evsub">7:00 to 11:00 · 29 of 30 places left</span></span></div>
+                    <div class="ui-cal__ev" data-ev="29"><span class="ui-cal__date"><b>29</b><i>Nov</i></span><span class="ui-cal__evtext"><span class="ui-cal__evtitle">Reading hour at the library</span><span class="ui-cal__evsub">Sector 15, Noida · 9 of 10 places left</span></span></div>
+                  </div>
                 </div>
               </div></div>
             </div>
@@ -406,7 +426,7 @@
           <h3>Hour log alerts for coordinators</h3>
           <p>A submitted log goes to the coordinator of that event. Verified hours update the report and the next certificate.</p>
           <div class="panel">
-            <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max: 380px; --ax: max(24px, 50% - 190px); --ay: calc(100% - 180px); --ay-sm: calc(100% - 180px)">
+            <div class="stage stage--fade-b"><div class="at-rise fit" style="--fit-max: 380px; --ax: max(24px, 50% - 190px); --ay: 32px; --ay-sm: 20px">
               <div class="ui ui-notify" data-ui="notify">
                 <ul class="ui-notify__list" data-notify-list>
                   <li class="ui-note"><span class="ui-avatar ui-note__av" data-tone="1">AM</span><span class="ui-note__text"><span class="ui-note__title">Aarav Mehta logged 3 hours<time>now</time></span><span class="ui-note__body">Diwali meal drive, waiting for you</span></span><span class="ui-btn ui-btn--sm ui-note__btn">Verify</span></li>
@@ -443,7 +463,7 @@
     </div>
   </section>
 
-  <section class="section ground-surface" id="questions" data-moment="iris-opens" data-moment-opts='{"from": "base"}' aria-labelledby="questions-h">
+  <section class="section" id="questions" data-moment="iris-opens" data-moment-opts='{"from": "base"}' aria-labelledby="questions-h">
     <div class="wrap">
       <div class="grid grid--top">
         <div class="span-5 stack-4">
